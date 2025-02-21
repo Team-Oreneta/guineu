@@ -12,8 +12,8 @@ impl Framebuffer {
     pub fn new(base_address: u32, width: usize, height: usize) -> Self {
         Self {
             base_address: base_address as *mut u32,
-            width,
-            height,
+            width: width / 4,
+            height: height / 4,
             bg_color: 0x111111,
         }
     }
@@ -22,7 +22,13 @@ impl Framebuffer {
     pub fn draw_pixel(&self, x: usize, y: usize, color: u32) {
         if x < self.width && y < self.height {
             unsafe {
-                ptr::write_volatile(self.base_address.add(y * self.width + x), color);
+                for row in 0..8 {
+                    for col in 0..4 {
+                        let physical_width = self.width * 4; // logical width multiplied by 4 gives the physical width
+                        let offset = (y * 8 + row) * physical_width + (x * 4 + col);
+                        ptr::write_volatile(self.base_address.add(offset), color);
+                    }
+                }
             }
         }
     }
