@@ -122,7 +122,7 @@ impl Writer {
         sleepticks(1000);
 
         self.print_string(
-            "Oreneta Booting Up!",
+            "GUIneu Booting Up!",
             0xFFFFFF,
         );
     }
