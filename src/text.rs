@@ -94,37 +94,6 @@ impl Writer {
         self.cursor_y += LINE_SPACING;
     }
 
-    // Print the logo to the framebuffer
-    pub fn print_logo(&mut self, color: u32) {
-        let logo = r#"
-                                                                         .-%@@@*.                   
-                                                                          :@@@@@@*                  
-                                                                          -@@@@@@@@#                
-                                                                        .@@@@POYO@@@@:              
-                                                                         *@@@@@@@@@@@@              
-                                                                         .@@SEGFAULT@@-             
-                                                                          .@@@@@@@@@@@@             
-                                                                            *@@@JAKE@@@.           
-        ..+*=.                                                                .@@@@@@@@@@.          
-      @@@.  .@@@:                                                      .         *@ELIJAH@          
-    *@@+      =@@@.                                                  -@@          .+@@@@@.@.        
-   #@@@.       @@@@.    .-..=#=.   .=#*-.     .-..-*=.      :+#=.  .+@@@::.   :=@*%* .@@@@.@.       
-   @@@@        :@@@% -@@@@+@@@@. .@@. -@@*.+@@@@@+*@@@+  .@@#  @@@..=@@@....@@* .@@@. .@@@@@%.      
-   @@@@        .@@@%  .@@@.  .. -@@@+%@@@@. :@@@.  =@@@. @@@+#@@@@+ :@@@   .::   @@@:   @=.@@@.     
-   *@@@-       =@@@   .@@@.     @@@*        .@@@.  .@@@..@@@.       :@@@    .-@@*@@@:    +. #.      
-    =@@@.     .@@@.   .@@@.     +@@@.    .  .@@@.  :@@@..@@@@    .. :@@@   *@@@  @@@:     :. -.     
-     .+@@@.  *@@.     .@@@+      -@@@@@@@.  %@@@.  #@@@. .@@@@@@@%. .@@@@@=.@@@@@@@@@%     =. ..    
-          ..                         .                        .                             =  .-   
-                                                                                             -  .:  
-                                                                                             .*    
-    "#;
-
-        // Print the logo
-        self.print_string(logo, color);
-        // Reset cursor position
-        self.cursor_x = 0;
-    }
-
     // Fill the screen with stripes of colors
     fn fill_screen(&self, colors: &[u32]) {
         let num_colors = colors.len();
@@ -160,9 +129,8 @@ impl Writer {
 
     // Display the boot message after loading
     pub fn boot_message_loaded(&mut self) {
-        self.print_logo(0xFFFFFF);
         self.print_string(
-            "Welcome to Oreneta :D\nMade by Segfault, Poyo, Jake and Elijah with lots of <3.\n",
+            "Welcome to GUIneu :D\nMade by Segfault, Jake and Poyo. Lots of <3 included. :D\n",
             0xFFFFFF,
         );
     }

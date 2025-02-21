@@ -52,7 +52,7 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     let initrd = Ramdisk::new(initrd_address);
 
     // Load the logo from the ramdisk
-    let logo = initrd.get_file("./oreneta-logo.oiff").unwrap();
+    let logo = initrd.get_file("./guineu-logo.oiff").unwrap();
 
     // Display boot messages
     text::WRITER.lock().boot_message(logo);
