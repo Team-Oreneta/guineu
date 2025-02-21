@@ -7,13 +7,16 @@ pub struct Framebuffer {
     pub bg_color: u32,          // Background color
 }
 
+const SCALE_FACTOR_X: usize = 2;
+const SCALE_FACTOR_Y: usize = 2;
+
 impl Framebuffer {
     // Create a new framebuffer instance
     pub fn new(base_address: u32, width: usize, height: usize) -> Self {
         Self {
             base_address: base_address as *mut u32,
-            width: width / 4,
-            height: height / 4,
+            width: width / SCALE_FACTOR_X,
+            height: height / SCALE_FACTOR_Y,
             bg_color: 0x111111,
         }
     }
@@ -22,10 +25,11 @@ impl Framebuffer {
     pub fn draw_pixel(&self, x: usize, y: usize, color: u32) {
         if x < self.width && y < self.height {
             unsafe {
-                for row in 0..8 {
-                    for col in 0..4 {
-                        let physical_width = self.width * 4; // logical width multiplied by 4 gives the physical width
-                        let offset = (y * 8 + row) * physical_width + (x * 4 + col);
+                for row in 0..SCALE_FACTOR_Y {
+                    for col in 0..SCALE_FACTOR_X {
+                        let physical_width = self.width * SCALE_FACTOR_X; // logical width multiplied by 4 gives the physical width
+                        let offset = (y * SCALE_FACTOR_Y + row) * physical_width
+                            + (x * SCALE_FACTOR_X + col);
                         ptr::write_volatile(self.base_address.add(offset), color);
                     }
                 }
