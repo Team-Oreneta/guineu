@@ -3,6 +3,7 @@ use core::fmt;
 use font8x8::legacy::BASIC_LEGACY;
 use lazy_static::lazy_static;
 use spin::Mutex;
+use crate::framebuffer;
 use crate::framebuffer::Framebuffer;
 use crate::fs;
 use crate::oiff;
@@ -44,7 +45,14 @@ impl Writer {
     fn scroll_up(&mut self, lines: usize, color: u32) {
         for y in 0..self.framebuffer.height - lines {
             for x in 0..self.framebuffer.width {
-                let color = unsafe { ptr::read_volatile(self.framebuffer.base_address.add((y + lines) * self.framebuffer.width + x)) };
+                let color = unsafe {
+                    ptr::read_volatile(
+                        self.framebuffer.base_address.add(
+                            (y * framebuffer::SCALE_FACTOR_Y + lines * framebuffer::SCALE_FACTOR_Y) *
+                            (self.framebuffer.width * framebuffer::SCALE_FACTOR_X)
+                            + x * framebuffer::SCALE_FACTOR_X))
+                        };
+
                 self.framebuffer.draw_pixel(x, y, color);
             }
         }
