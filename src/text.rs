@@ -115,7 +115,6 @@ impl Writer {
     // Display the boot message with the logo
     pub unsafe fn boot_message(&mut self, logo_file: &fs::tar::UStarHeader) {
         self.fill_screen(&[0x050505, 0x111111, 0x121212, 0x222222, 0x232323, 0x333333]);
-        self.fill_screen(&[0x111111]);
         let (header, contents) = oiff::OIFFHeader::parse(logo_file.get_contents_address() as *const u32);
     
         // let header = contents.as_ptr() as *const oiff::OIFFHeader;
