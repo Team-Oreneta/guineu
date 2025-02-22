@@ -38,6 +38,7 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     isrs::init_isrs();
     irq::init_irqs();
     timer::init_timer();
+    alloc::init_alloc();                                                                      
     keyboard::init_keyboard();
 
     // Use the multiboot information structure

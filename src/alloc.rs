@@ -12,8 +12,8 @@ pub unsafe fn init_alloc() {
 } 
 
 // Allocate memory                                                                                                                  
- pub unsafe fn alloc(size: usize) -> *mut u8 {                                                                      
-     let address = PLACEMENT_PTR.unwrap();                                                                          
-     PLACEMENT_PTR = Some(address + size);                                                                          
-     address as *mut u8                                                                                             
+ pub unsafe fn alloc(size: usize) -> *mut u8 {
+    let address = PLACEMENT_PTR.unwrap();                                                                          
+    PLACEMENT_PTR = Some(address + size);                                                                          
+    address as *mut u8                                                                                             
  } 
