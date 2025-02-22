@@ -19,6 +19,7 @@ mod ports;
 mod system;
 mod text;
 mod timer;
+mod alloc;
 
 // Define the panic handler function
 #[panic_handler]
@@ -53,6 +54,10 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
 
     // Load the logo from the ramdisk
     let logo = initrd.get_file("./guineu-logo.oiff").unwrap();
+
+    // Set up bump alloc
+    let alloc = alloc::alloc(4) as *mut u32;
+    *alloc = 42;
 
     // Display boot messages
     text::WRITER.lock().boot_message(logo);
