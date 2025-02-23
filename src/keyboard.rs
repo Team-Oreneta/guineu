@@ -4,6 +4,7 @@ use crate::irq;
 use crate::ports;
 use crate::print;
 use crate::system;
+use crate::input;
 
 // Define the US keyboard layout
 const KEYBOARD_US: [u8; 128] = [
@@ -54,11 +55,25 @@ static mut STATE: KeyboardState = KeyboardState {
     ctrl: false,
 };
 
+static mut KEYBOARD_PUTCHAR_HANDLER: fn(c: char) = keyboard_putchar;
+
 // Function to print a character to the screen
 fn keyboard_putchar(c: char) {
     // When we implement input functions, this is
     // where the code will go.
     print!("{}", c);
+    input::input_handler(c);
+}
+
+pub fn install_keyboard_buffer_handler(handler: fn(c: char)) {
+    unsafe {
+        KEYBOARD_PUTCHAR_HANDLER = handler;
+    }
+}
+pub fn uninstall_keyboard_buffer_handler(handler: fn(c: char)) {
+    unsafe {
+        KEYBOARD_PUTCHAR_HANDLER = keyboard_putchar;
+    }
 }
 
 // Function to handle Alt key press
@@ -91,12 +106,12 @@ fn other(scancode: u8) {
         } else if KEYBOARD_US[scancode as usize] == 0u8 {
             return;
         } else if STATE.shift {
-            keyboard_putchar(KEYBOARD_US_SHIFTED[scancode as usize] as char);
+            KEYBOARD_PUTCHAR_HANDLER(KEYBOARD_US_SHIFTED[scancode as usize] as char);
         } else if STATE.ctrl {
-            keyboard_putchar('^');
-            keyboard_putchar(KEYBOARD_US_SHIFTED[scancode as usize] as char);
+            KEYBOARD_PUTCHAR_HANDLER('^');
+            KEYBOARD_PUTCHAR_HANDLER(KEYBOARD_US_SHIFTED[scancode as usize] as char);
         } else {
-            keyboard_putchar(KEYBOARD_US[scancode as usize] as char);
+            KEYBOARD_PUTCHAR_HANDLER(KEYBOARD_US[scancode as usize] as char);
         }
     }
 }

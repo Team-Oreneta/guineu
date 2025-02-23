@@ -10,6 +10,7 @@ mod framebuffer;
 mod fs;
 mod gdt;
 mod idt;
+mod input;
 mod irq;
 mod isrs;
 mod keyboard;
@@ -57,8 +58,8 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     let logo = initrd.get_file("./guineu-logo.oiff").unwrap();
 
     // Set up bump alloc
-    let alloc = alloc::alloc(4) as *mut u32;
-    *alloc = 42;
+    // let alloc = alloc::alloc(4) as *mut u32;
+    // *alloc = 42;
 
     // Display boot messages
     text::WRITER.lock().boot_message(logo);
@@ -71,6 +72,14 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
         test_file.read_size()
     );
     test_file.write_contents();
+
+    // FIXME: This should be dynamically allocated.
+    let mut buffer = [0u8; 128];
+    print!(">");
+
+    let n_chars = input::get_user_input(&mut buffer);
+    let inputted_string = core::str::from_utf8(&buffer).unwrap();
+    println!("You entered {} chars: {}", n_chars, inputted_string);
 
     // Infinite loop to keep the kernel running
     loop {}
