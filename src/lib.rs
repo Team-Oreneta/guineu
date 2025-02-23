@@ -6,6 +6,7 @@
 use core::panic::PanicInfo;
 use fs::tar::Ramdisk;
 
+mod tab_handler;
 mod framebuffer;
 mod fs;
 mod gdt;
@@ -81,6 +82,12 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     let inputted_string = core::str::from_utf8(&buffer).unwrap();
     println!("You entered {} chars: {}", n_chars, inputted_string);
 
+    let mut main_tab_handler = tab_handler::TabHandler::new();
+
     // Infinite loop to keep the kernel running
-    loop {}
+    loop {
+        let n_chars = input::get_user_input(&mut buffer);
+        let inputted_string = core::str::from_utf8(&buffer).unwrap();
+        keyboard::map_key(0x01, main_tab_handler.switch_tab);
+    }
 }
