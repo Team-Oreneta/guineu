@@ -88,6 +88,6 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     loop {
         let n_chars = input::get_user_input(&mut buffer);
         let inputted_string = core::str::from_utf8(&buffer).unwrap();
-        keyboard::map_key(0x01, main_tab_handler.switch_tab);
+        keyboard::map_key(0x01, main_tab_handler.switch_tab());
     }
 }
