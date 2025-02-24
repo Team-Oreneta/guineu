@@ -6,4 +6,4 @@ target = "config/i686-oreneta.json"
 
 [unstable]
 build-std-features = ["compiler-builtins-mem"]
-build-std = ["core", "compiler_builtins", "alloc"]
+build-std = ["core", "compiler_builtins"]

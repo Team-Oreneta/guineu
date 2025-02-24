@@ -57,11 +57,7 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
 
     // Load the logo from the ramdisk
     let logo = initrd.get_file("./guineu-logo.oiff").unwrap();
-
-    // Set up bump alloc
-    // let alloc = alloc::alloc(4) as *mut u32;
-    // *alloc = 42;
-
+    
     // Display boot messages
     text::WRITER.lock().boot_message(logo);
     text::WRITER.lock().boot_message_loaded();
@@ -82,12 +78,11 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     let inputted_string = core::str::from_utf8(&buffer).unwrap();
     println!("You entered {} chars: {}", n_chars, inputted_string);
 
-    let mut main_tab_handler = tab_handler::TabHandler::new();
+    keyboard::map_key(0x01,  tab_handler::switch_tab);
 
     // Infinite loop to keep the kernel running
     loop {
         let n_chars = input::get_user_input(&mut buffer);
         let inputted_string = core::str::from_utf8(&buffer).unwrap();
-        keyboard::map_key(0x01, main_tab_handler.switch_tab());
     }
 }

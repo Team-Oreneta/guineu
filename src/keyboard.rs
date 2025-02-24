@@ -1,14 +1,11 @@
 #[allow(dead_code)]
 
-extern crate alloc;
 use crate::irq;
 use crate::ports;
 use crate::print;
 use crate::system;
 use crate::input;
 use crate::tab_handler;
-
-use alloc::boxed::Box;
 
 // Define the US keyboard layout
 const KEYBOARD_US: [u8; 128] = [

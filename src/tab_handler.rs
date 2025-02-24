@@ -1,4 +1,6 @@
 use crate::println;
+use lazy_static::lazy_static;
+use spin::Mutex;
 
 struct Tab {
     name: &'static str,
@@ -9,6 +11,10 @@ struct Tab {
 pub struct TabHandler {
     tabs: [Tab; 2],
     currentTab: usize,
+}
+
+lazy_static! {
+    pub static ref GLOBAL_TAB_HANDLER: Mutex<TabHandler> = Mutex::new(TabHandler::new());
 }
 
 impl TabHandler {
@@ -38,4 +44,8 @@ impl TabHandler {
     pub fn handle_tab(&self) {
         (self.tabs[self.currentTab].handler)();
     }
+}
+
+pub fn switch_tab(_scancode: u8) {
+    GLOBAL_TAB_HANDLER.lock().switch_tab();
 }
