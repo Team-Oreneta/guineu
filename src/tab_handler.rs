@@ -40,12 +40,15 @@ impl TabHandler {
         self.currentTab = (self.currentTab + 1) % self.tabs.len();
         println!("Switched to {}", self.tabs[self.currentTab].name);
     }
-    
+
     pub fn handle_tab(&self) {
         (self.tabs[self.currentTab].handler)();
     }
 }
 
-pub fn switch_tab(_scancode: u8) {
-    GLOBAL_TAB_HANDLER.lock().switch_tab();
+pub fn switch_tab(scancode: u8) {
+    // If this is a keypress as opposed to release
+    if (scancode % 0x80) == scancode {
+        GLOBAL_TAB_HANDLER.lock().switch_tab();
+    }
 }
