@@ -99,8 +99,26 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
             } else {
                 echo::echo("");
             }
-        }
-        else if inputted_string.starts_with("exit") {
+        } else if inputted_string.starts_with("cat") {
+            // Meow
+            // Find the first space after the command and trim out the command.
+            if let Some(space_index) = inputted_string.find(' ') {
+                let args = inputted_string[space_index + 1..].trim();
+                let file_option = initrd.get_file(args);
+
+                if file_option.is_none() {
+                    println!("cat: {}: No such file or directory. Note that paths must start with ./", args);
+                    continue;
+                }
+                // unwrap() is fine because we just checked for None
+                let file = file_option.unwrap();
+                file.write_contents();
+                println!();
+            } else {
+                // I don't know, it's just what the Cat in Linux says
+                println!("cat: missing file name");
+            }
+        } else if inputted_string.starts_with("exit") {
             println!("Exiting the GUIneu kernel-mode debug shell...");
             break;
         } else {
