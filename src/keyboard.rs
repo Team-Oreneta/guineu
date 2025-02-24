@@ -128,7 +128,7 @@ fn unused(_scancode: u8) {
 
 #[allow(dead_code)]
 // Function to map a key to a function
-pub fn map_key(scancode: u8, function: Box<dyn FnMut(u8)>) {
+pub fn map_key(scancode: u8, function: fn(u8)) {
     // Maps a key to a function. The function should
     // take the scancode as an argument.
 
