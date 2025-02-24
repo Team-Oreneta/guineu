@@ -3,6 +3,7 @@ use crate::keyboard::{
     install_keyboard_buffer_handler,
     uninstall_keyboard_buffer_handler
 };
+use crate::println;
 
 static mut KEYBOARD_BUFFER_PTR: *mut u8 = core::ptr::null_mut();
 static mut KEYBOARD_BUFFER_SIZE: usize = 0;
@@ -20,6 +21,7 @@ pub fn input_handler(c: char) {
         }
 
         if c == '\n' {
+            println!();
             IS_NEWLINE = true;
             return;
         } else {

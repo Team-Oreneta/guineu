@@ -72,7 +72,7 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
 
     // FIXME: This should be dynamically allocated.
     let mut buffer = [0u8; 128];
-    print!(">");
+    print!("\n>");
 
     let n_chars = input::get_user_input(&mut buffer);
     let inputted_string = core::str::from_utf8(&buffer).unwrap();
