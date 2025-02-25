@@ -22,7 +22,7 @@ mod system;
 mod text;
 mod timer;
 mod alloc;
-mod echo;
+mod pathtracer;
 
 // Define the panic handler function
 #[panic_handler]
@@ -87,19 +87,11 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
         if inputted_string.is_empty() {
             // Return to the start of the loop.
             continue;
+        } else {
+            pathtracer::find_command(inputted_string);
         }
 
-        // So this is a woefully inelegant solution for running programs, and should be changed later.
-        // Ideally this will run through a "bin" folder till it hits the command inputted, and run that, like PATH would.
-        if inputted_string.starts_with("echo") {
-            // Find the first space after the command and trim out the command.
-            if let Some(space_index) = inputted_string.find(' ') {
-                let args = inputted_string[space_index + 1..].trim();
-                echo::echo(args);
-            } else {
-                echo::echo("");
-            }
-        } else if inputted_string.starts_with("cat") {
+       if inputted_string.starts_with("cat") {
             // Meow
             // Find the first space after the command and trim out the command.
             if let Some(space_index) = inputted_string.find(' ') {
@@ -121,8 +113,6 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
         } else if inputted_string.starts_with("exit") {
             println!("Exiting the GUIneu kernel-mode debug shell...");
             break;
-        } else {
-            println!("GUIneu: Unknown command: {}", inputted_string);
         }
     }
     // Infinite loop to keep the kernel running
