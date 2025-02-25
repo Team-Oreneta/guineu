@@ -7,8 +7,8 @@ pub struct Framebuffer {
     pub bg_color: u32,          // Background color
 }
 
-pub const SCALE_FACTOR_X: usize = 1;
-pub const SCALE_FACTOR_Y: usize = 1;
+pub const SCALE_FACTOR_X: usize = 4;
+pub const SCALE_FACTOR_Y: usize = 4;
 
 impl Framebuffer {
     // Create a new framebuffer instance

@@ -15,8 +15,8 @@ fb_tag:
     dw 5
     dw 1
     dd fb_tag_end - fb_tag
-    dd 1024
-    dd 768
+    dd 512
+    dd 512
     dd 32
 fb_tag_end:
 
