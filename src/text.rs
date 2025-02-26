@@ -108,7 +108,7 @@ impl Writer {
         let stripe_height = self.framebuffer.height / num_colors;
         for (i, &color) in colors.iter().enumerate() {
             self.framebuffer.draw_rectangle(0, i * stripe_height, self.framebuffer.width, stripe_height, color);
-            sleepticks(1000);
+            sleepticks(100);
         }
     }
 

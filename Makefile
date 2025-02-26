@@ -1,12 +1,12 @@
 ARCH := i686
-TARGET := release
+TARGET := debug
 
 LDFILE := config/linker.ld
 LD := clang -target $(ARCH)-elf
 GRUB_CFG := config/grub.cfg
 
 # This is where cargo compiles to
-LIB_PATH := target/$(ARCH)-oreneta/release/liboreneta.a
+LIB_PATH := target/$(ARCH)-oreneta/$(TARGET)/liboreneta.a
 
 ASM_SRC_FILES := $(wildcard src/arch/$(ARCH)/asm/*.asm)
 ASM_OBJ_FILES := $(patsubst src/arch/$(ARCH)/asm/%.asm, build/arch/$(ARCH)/asm/%.o, $(ASM_SRC_FILES))
