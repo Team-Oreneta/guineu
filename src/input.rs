@@ -1,3 +1,5 @@
+use core::arch::asm;
+
 use crate::print;
 use crate::keyboard::{
     install_keyboard_buffer_handler,
@@ -54,6 +56,7 @@ pub fn get_user_input(buffer: &mut [u8]) -> usize {
 
         while (BUFFER_INDEX < KEYBOARD_BUFFER_SIZE) && !IS_NEWLINE {
             // Wait for the user to press a key
+            asm!("hlt");
         }
 
         uninstall_keyboard_buffer_handler(input_handler);
