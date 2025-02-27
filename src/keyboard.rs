@@ -30,7 +30,7 @@ const KEYBOARD_US_SHIFTED: [u8; 128] = [
 // Define function pointers for keys
 static mut KEYBOARD_US_FNS: [fn(scancode: u8); 128] = [
     unused, unused, other, other, other, other, other, other, other, other, other, other, other,
-    other, unused, other, other, other, other, other, other, other, other, other, other, other,
+    other, other, other, other, other, other, other, other, other, other, other, other, other,
     other, other, other, ctrl, other, other, other, other, other, other, other, other, other,
     other, other, other, shift, other, other, other, other, other, other, other, other, other,
     other, other, shift, other, alt, other, unused, unused, unused, unused, unused, unused, unused,

@@ -84,7 +84,17 @@ impl Writer {
             if self.cursor_y + LINE_SPACING > self.framebuffer.height + self.scroll_y {
                 self.scroll_up(LINE_SPACING, self.framebuffer.bg_color);
             }
-
+            if c == '\x08' {
+                if self.cursor_x > 0 {
+                    self.cursor_x -= 8;
+                    for y in self.cursor_y..self.cursor_y + LINE_SPACING {
+                        for x in self.cursor_x..self.cursor_x + 8 {
+                            self.framebuffer.draw_pixel(x, y, self.framebuffer.bg_color);
+                        }
+                    }
+                }
+                continue;
+            }
             self.draw_char(self.cursor_x, self.cursor_y, c, color);
             self.cursor_x += 8;
             if self.cursor_x + 8 > self.framebuffer.width || c == '\n' {

@@ -24,6 +24,12 @@ pub fn input_handler(c: char) {
             println!();
             IS_NEWLINE = true;
             return;
+        } else if c == '\x08' {
+            if BUFFER_INDEX > 0 {
+                print!("\x08");
+                BUFFER_INDEX -= 1;
+            }
+            return;
         } else {
             print!("{}", c);
         }
