@@ -136,9 +136,9 @@ impl Writer {
         let (x, y) = self.framebuffer.get_center_xy(width, height);
         self.fill_screen(&[0xdf7126]);
         self.framebuffer.draw_image(x, y, width, height, contents);
-        sleepticks(2000);
+        sleepticks(500);
         self.framebuffer.draw_rectangle(0, 0, self.framebuffer.width, self.framebuffer.height, 0x111111);
-        sleepticks(1000);
+        sleepticks(500);
 
         self.print_string(
             "GUIneu Booting Up!",

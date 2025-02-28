@@ -25,14 +25,9 @@ impl Framebuffer {
     pub fn draw_pixel(&self, x: usize, y: usize, color: u32) {
         if x < self.width && y < self.height {
             unsafe {
-                for row in 0..SCALE_FACTOR_Y {
-                    for col in 0..SCALE_FACTOR_X {
-                        let physical_width = self.width * SCALE_FACTOR_X; // logical width multiplied by 4 gives the physical width
-                        let offset = (y * SCALE_FACTOR_Y + row) * physical_width
-                            + (x * SCALE_FACTOR_X + col);
-                        ptr::write_volatile(self.base_address.add(offset), color);
-                    }
-                }
+                let physical_width = self.width * SCALE_FACTOR_X;
+                let offset = y * physical_width + x;
+                ptr::write_volatile(self.base_address.add(offset), color);
             }
         }
     }
