@@ -5,6 +5,7 @@
 
 use core::panic::PanicInfo;
 use fs::tar::Ramdisk;
+use crate::tab_handler::GLOBAL_TAB_HANDLER;
 
 mod tab_handler;
 mod framebuffer;
@@ -80,8 +81,6 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     keyboard::map_key(0x01,  tab_handler::switch_tab);
 
     loop {
-        print!("> ");
-
         let n_chars = input::get_user_input(&mut buffer);
         let inputted_string = core::str::from_utf8(&buffer[..n_chars]).unwrap().trim();
 

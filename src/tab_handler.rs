@@ -52,3 +52,7 @@ pub fn switch_tab(scancode: u8) {
         GLOBAL_TAB_HANDLER.lock().switch_tab();
     }
 }
+
+pub fn get_current_tab() -> usize {
+    GLOBAL_TAB_HANDLER.lock().currentTab
+}
