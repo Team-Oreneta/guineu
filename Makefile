@@ -28,11 +28,7 @@ build/initrd: isoroot/
 	tar -H ustar -C $< -cf $@ .
 
 rustbuild:
-	@if [ "$(TARGET)" == "release" ]; then \
-		cargo build --release; \
-	else \
-		cargo build; \
-	fi
+	cargo build --release; \
 
 clean:
 	rm -rf build
