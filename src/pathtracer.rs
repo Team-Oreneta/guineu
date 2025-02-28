@@ -1,4 +1,5 @@
 use crate::println;
+use crate::clear;
 
 pub fn find_command(command: &str) {
     println!("[DEBUG] Pathtracer is parsing your command...");
@@ -17,6 +18,7 @@ pub fn find_command(command: &str) {
     match rawcommand {
         "echo" => println!("{}", args),
         //meta stuff:
+        "clear" => clear::clear(),
         "help" => println!("Available commands: echo"),
         _ => println!("Unknown command!"),
     }

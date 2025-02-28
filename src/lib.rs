@@ -23,6 +23,7 @@ mod text;
 mod timer;
 mod alloc;
 mod pathtracer;
+mod clear;
 
 // Define the panic handler function
 #[panic_handler]

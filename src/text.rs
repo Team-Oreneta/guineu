@@ -153,7 +153,21 @@ impl Writer {
             0xFFFFFF,
         );
     }
+
+    //Clear screen function
+    pub fn clear_screen(&mut self) {
+        self.framebuffer.draw_rectangle(0, 0, self.framebuffer.width, self.framebuffer.height, 0x111111);
+    }
+
+    //Reset cursor
+    pub fn reset_cursor(&mut self) {
+        self.cursor_x = 0;
+        self.cursor_y = 0;
+    }
+
 }
+
+    
 
 // Implement the fmt::Write trait for Writer
 impl fmt::Write for Writer {
