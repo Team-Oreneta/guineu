@@ -2,8 +2,6 @@ use crate::println;
 use crate::clear;
 
 pub fn find_command(command: &str) {
-    println!("[DEBUG] Pathtracer is parsing your command...");
-
     // Split the input: everything before the first space is the command,
     // and anything after (trimmed) is arguments.
     let (rawcommand, args) = match command.find(' ') {
