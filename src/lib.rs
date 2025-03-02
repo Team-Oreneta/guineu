@@ -81,6 +81,8 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
     keyboard::map_key(0x01,  tab_handler::switch_tab);
 
     loop {
+        print!("> ");
+        
         let n_chars = input::get_user_input(&mut buffer);
         let inputted_string = core::str::from_utf8(&buffer[..n_chars]).unwrap().trim();
 
@@ -113,6 +115,9 @@ pub unsafe extern "C" fn kmain(multiboot_info_address: usize) -> ! {
         } else if inputted_string.starts_with("exit") {
             println!("Exiting the GUIneu kernel-mode debug shell...");
             break;
+        } else if inputted_string.starts_with("demo") {
+            let demoimg = initrd.get_file("./guineudemo.oiff").unwrap();
+            text::WRITER.lock().demo(demoimg);
         }
     }
     // Infinite loop to keep the kernel running

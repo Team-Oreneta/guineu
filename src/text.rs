@@ -118,7 +118,7 @@ impl Writer {
         let stripe_height = self.framebuffer.height / num_colors;
         for (i, &color) in colors.iter().enumerate() {
             self.framebuffer.draw_rectangle(0, i * stripe_height, self.framebuffer.width, stripe_height, color);
-            sleepticks(100);
+            sleepticks(500);
         }
     }
 
@@ -136,9 +136,9 @@ impl Writer {
         let (x, y) = self.framebuffer.get_center_xy(width, height);
         self.fill_screen(&[0xdf7126]);
         self.framebuffer.draw_image(x, y, width, height, contents);
-        sleepticks(500);
+        sleepticks(1000);
         self.framebuffer.draw_rectangle(0, 0, self.framebuffer.width, self.framebuffer.height, 0x111111);
-        sleepticks(500);
+        sleepticks(1000);
 
         self.print_string(
             "GUIneu Booting Up!",
@@ -159,15 +159,83 @@ impl Writer {
         self.framebuffer.draw_rectangle(0, 0, self.framebuffer.width, self.framebuffer.height, 0x111111);
     }
 
-    //Reset cursor
+
+    pub unsafe fn demo(&mut self, demoimg: &fs::tar::UStarHeader) {
+        let (header, contents) = oiff::OIFFHeader::parse(demoimg.get_contents_address() as *const u32);
+        let width = (*header).width as usize;
+        let height = (*header).height as usize;
+        let (x, mut y) = self.framebuffer.get_center_xy(width, height);
+    
+        // Dynamic color wipe intro
+        self.fill_screen(&[0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0xFF00FF, 0x00FFFF]);
+        sleepticks(200);
+        self.clear_screen();
+
+        self.framebuffer.draw_image(x, y, width, height, contents);
+        sleepticks(5000);
+    
+        //show demo image
+        let lines_to_scroll = 768 / LINE_SPACING + 3;
+        for _ in 0..lines_to_scroll {
+            self.scroll_up(LINE_SPACING, 0x111111);
+            //self.framebuffer.draw_image(x, y, width, height, contents);
+            y -= LINE_SPACING;
+        }
+
+    
+  // Draw a large red heart using a scaled-up bitmap
+  const SCALE_FACTOR: usize = 8;  // 8x scaling (64x64 heart)
+  let heart_bitmap = [
+      0b01100110, // Row 0
+      0b11111111, // Row 1
+      0b11111111, // Row 2
+      0b11111111, // Row 3
+      0b01111110, // Row 4
+      0b00111100, // Row 5
+      0b00011000, // Row 6
+      0b00000000, // Row 7
+  ];
+
+  // Calculate center position for scaled heart
+  let (center_x, center_y) = self.framebuffer.get_center_xy(
+      8 * SCALE_FACTOR,
+      8 * SCALE_FACTOR
+  );
+
+  
+
+  // Draw scaled heart pixels
+  for (row, &byte) in heart_bitmap.iter().enumerate() {
+    let color = 0xFF0000 | (row as u32 * 16) << 8;
+      for col in 0..8 {
+          if (byte >> (7 - col)) & 1 != 0 {
+              // Draw scaled pixel block
+              self.framebuffer.draw_rectangle(
+                  center_x + col * SCALE_FACTOR,
+                  center_y + row * SCALE_FACTOR,
+                  SCALE_FACTOR,
+                  SCALE_FACTOR,
+                  color  // Fun gradient :3
+              );
+              
+          }
+      }
+      
+  }
+
+        sleepticks(3000);
+        
+        self.clear_screen();
+        self.reset_cursor();
+    }
+    
+
+        //Reset cursor
     pub fn reset_cursor(&mut self) {
         self.cursor_x = 0;
         self.cursor_y = 0;
     }
-
 }
-
-    
 
 // Implement the fmt::Write trait for Writer
 impl fmt::Write for Writer {

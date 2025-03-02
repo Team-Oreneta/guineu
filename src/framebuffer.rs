@@ -52,9 +52,11 @@ impl Framebuffer {
         }
     }
 
+
+
     pub fn get_center_xy(&self, width: usize, height: usize) -> (usize, usize) {
         let x = (self.width - width) / 2;
         let y = (self.height - height) / 2;
         (x, y)
     }
-}
+}   

@@ -1,5 +1,5 @@
 ARCH := i686
-TARGET := debug
+TARGET := release
 
 LDFILE := config/linker.ld
 LD := clang -target $(ARCH)-elf
