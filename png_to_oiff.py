@@ -11,6 +11,10 @@ VERSION_MINOR = 1
 def image_to_oiff(image_path, output_path):
     img = Image.open(image_path)
 
+    # Convert image to RGBA if it is not already in that mode
+    if img.mode != 'RGBA':
+        img = img.convert('RGBA')
+
     with open(output_path, "wb") as f:
         # Magic number; Oreneta Image File Format
         f.write(b"OIFF")
@@ -30,7 +34,6 @@ def image_to_oiff(image_path, output_path):
         # Pad with zeroes
         padding_needed = 128 - f.tell()
         if padding_needed > 0:
-            # pass
             f.write(b'\0' * padding_needed)
 
         for y in range(img.height):
